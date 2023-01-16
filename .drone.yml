@@ -1,0 +1,53 @@
+---
+kind: pipeline
+type: docker
+name: test & deploy
+
+steps:
+  - name: test
+    image: node:lts-alpine
+    commands:
+      - yarn
+      - yarn build
+  - name: update server files
+    image: alpine/git
+    when:
+      branch: main
+    volumes:
+      - name: server
+        path: /server
+    commands:
+      - cd /server/_repos/leaf
+      - git config --global --add safe.directory /server/_repos/leaf
+      - git pull --rebase
+  - name: deploy to server
+    image: docker/compose
+    when:
+      branch: main
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+      - name: server
+        path: /server
+    environment:
+      LEAF_API_KEY:
+        from_secret: LEAF_API_KEY
+    commands:
+      - cd /server
+      - ./start.sh leaf --build
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
+  - name: server
+    host:
+      path: /server
+
+---
+kind: secret
+name: LEAF_API_KEY
+data: xdnkQwQQk8QC8s+M5BSGOsSq4OA+wPQrWUcPttOQG6YpSJvTy40UdY5WKAwaItGZ1MoFXr7C0T4Qurqn52/ID5nmMTim2uDtx/s4LuHUEEqcjmNJZiGHtnwXScfERdROP8Ioag==
+---
+kind: signature
+hmac: 99589a9311027ab3f8202242907fd8ea9a4c1a0af400c363e1796b07d4982b30

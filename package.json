@@ -1,0 +1,35 @@
+{
+  "name": "leaf-bot",
+  "version": "0.0.1",
+  "description": "Discord Bot for personal usage",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "serve": "nodemon src/index.ts",
+    "dev": "docker-compose -p leaf_dev -f ./docker-compose.yml up --remove-orphans"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MauriceNino/leaf-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MauriceNino/leaf-bot/issues"
+  },
+  "homepage": "https://github.com/MauriceNino/leaf-bot#readme",
+  "dependencies": {
+    "discord.js": "14.7.1",
+    "moment": "2.29.4"
+  },
+  "devDependencies": {
+    "@types/moment": "2.13.0",
+    "@types/node": "18.7.14",
+    "nodemon": "2.0.19",
+    "prettier": "2.7.1",
+    "ts-node": "10.9.1",
+    "typescript": "4.8.2"
+  },
+  "packageManager": "yarn@3.2.3"
+}
